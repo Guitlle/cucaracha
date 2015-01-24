@@ -29,25 +29,26 @@
                 this.game.load.image('fondo2', 'assets/cocinamuebles.png');
                 this.game.load.image('cuca', 'assets/cockroach-04.png');
                 this.game.load.image('logo', 'phaser.png');
+                this.game.load.image('atari', 'atari.png');
             };
 
             // Setup the example
             GameState.prototype.create = function() {
-                this.game.world.setBounds(0, 0, this.width, this.height);    
+                this.game.world.setBounds(0, 0, this.width, this.height);
                 // Set stage background to something sky colored
                 this.game.stage.backgroundColor = 0x4488cc;
-                
+
                 this.game.bondel = {};
 
                 this.game.bondel.fondo = this.game.add.tileSprite(0, 0, this.cameraWidth, this.cameraHeight, 'fondo');
                 this.game.bondel.fondo.fixedToCamera = true;
-                
+
                 // Create a missile and add it to the game in the bottom center of the stage
                 this.game.bondel.cuca = this.game.add.existing(
                     new Cuca(this.game, this.game.width/2, this.game.height - 16)
                 );
                 //this.game.bondel.cuca.scale = new PIXI.Point(0.5,0.5);
-                
+
                 this.game.bondel.fondo2 = this.game.add.tileSprite(0, 0, this.cameraWidth, this.cameraHeight, 'fondo2');
                 this.game.bondel.fondo2.fixedToCamera = true;
 
@@ -56,7 +57,10 @@
                 this.game.input.activePointer.x = this.game.width/2;
                 this.game.input.activePointer.y = this.game.height/2 - 100;
                 this.game.camera.follow(this.game.bondel.cuca);
-                
+
+                this.game.time.events.loop(Phaser.Timer.SECOND * 4, addItem, this);
+
+
                 this.game.camera.deadzone= new Phaser.Rectangle( Math.ceil( this.camera.width*0.25 ), Math.ceil( this.camera.height*0.25 ), Math.ceil(this.camera.width*0.5), Math.ceil(this.camera.height*0.5) );
             };
 
@@ -101,12 +105,12 @@
                 // Calculate the angle from the missile to the mouse cursor game.input.x
                 // and game.input.y are the mouse position; substitute with whatever
                 // target coordinates you need.
-                    
+
                 var targetAngle = this.game.math.angleBetween(
                     this.x, this.y,
                     this.game.input.activePointer.x + this.game.camera.x, this.game.input.activePointer.y  + this.game.camera.y
                 );
-                
+
                 // Add our "wobble" factor to the targetAngle to make the missile wobble
                 // Remember that this.wobble is tweening (above)
                 targetAngle += this.game.math.degToRad(this.wobble);
@@ -137,7 +141,7 @@
                 // Calculate velocity vector based on this.rotation and this.SPEED
                 this.body.velocity.x = Math.cos(this.rotation) * this.SPEED;
                 this.body.velocity.y = Math.sin(this.rotation) * this.SPEED;
-                
+
                 if (!this.game.camera.atLimit.x)
                 {
                     this.game.bondel.fondo2.tilePosition.x = this.game.bondel.fondo.tilePosition.x = -this.game.camera.x;
@@ -148,8 +152,12 @@
                     this.game.bondel.fondo2.tilePosition.y = this.game.bondel.fondo.tilePosition.y = -this.game.camera.y;
                 }
                 i++;
-                
+
             };
+
+            var addItem = function(){
+              game.add.sprite(0, 0, 'atari');
+            }
 
             var game = new Phaser.Game(GameState.width, GameState.height, Phaser.AUTO, '');
             game.state.add('game', GameState, true);
