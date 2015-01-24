@@ -3,11 +3,10 @@
     <head>
         <meta charset="UTF-8" />
         <title>hello phaser!</title>
-        <script src="js/phaser.min.js"></script>
-        <script src="js/phaser.min.js"></script>
+        <script src="js/phaser.js"></script>
+        <script src="js/p2.js"></script>
     </head>
     <body>
-                    <div id="example-container" style="margin-bottom: 1em"></div>
 
     <script type="text/javascript">
 
@@ -22,33 +21,42 @@ var GameState = function(game) {
 
 // Load images and sounds
 GameState.prototype.preload = function() {
-    this.game.load.image('rocket', 'assets/cucaracha.png');
+    this.game.load.image('fondo', 'assets/starfield.jpg');
+    this.game.load.image('cuca', 'assets/cucaracha.png');
 };
 
 // Setup the example
 GameState.prototype.create = function() {
-    this.game.world.setBounds(0, 0, 800, 400);    
+    this.game.world.setBounds(0, 0, 1600, 1200);    
     // Set stage background to something sky colored
     this.game.stage.backgroundColor = 0x4488cc;
+    
+    this.game.bondel = {};
+
+    this.game.bondel.fondo = this.game.add.tileSprite(0, 0, 800, 400, 'fondo');
+    this.game.bondel.fondo.fixedToCamera = true;
 
     // Create a missile and add it to the game in the bottom center of the stage
-    this.game.add.existing(
-        new Missile(this.game, this.game.width/2, this.game.height - 16)
+    this.game.bondel.cuca = this.game.add.existing(
+        new Cuca(this.game, this.game.width/2, this.game.height - 16)
     );
-
+    
     // Simulate a pointer click/tap input at the center of the stage
     // when the example begins running.
     this.game.input.activePointer.x = this.game.width/2;
     this.game.input.activePointer.y = this.game.height/2 - 100;
+    this.game.camera.deadzone= new Phaser.Rectangle(200, 100, 400, 200);
+	this.game.camera.follow(this.game.bondel.cuca);
+
 };
 
 // The update() method is called every frame
 GameState.prototype.update = function() {
 };
 
-// Missile constructor
-var Missile = function(game, x, y) {
-    Phaser.Sprite.call(this, game, x, y, 'rocket');
+// Cuca constructor
+var Cuca = function(game, x, y) {
+    Phaser.Sprite.call(this, game, x, y, 'cuca');
 
     // Set the pivot point for this sprite to the center
     this.anchor.setTo(0.5, 0.5);
@@ -74,19 +82,21 @@ var Missile = function(game, x, y) {
         );
 };
 
-// Missiles are a type of Phaser.Sprite
-Missile.prototype = Object.create(Phaser.Sprite.prototype);
-Missile.prototype.constructor = Missile;
+// Cuca are a type of Phaser.Sprite
+Cuca.prototype = Object.create(Phaser.Sprite.prototype);
+Cuca.prototype.constructor = Cuca;
 
-Missile.prototype.update = function() {
+var i = 0;
+Cuca.prototype.update = function() {
     // Calculate the angle from the missile to the mouse cursor game.input.x
     // and game.input.y are the mouse position; substitute with whatever
     // target coordinates you need.
+        
     var targetAngle = this.game.math.angleBetween(
         this.x, this.y,
-        this.game.input.activePointer.x, this.game.input.activePointer.y
+        this.game.input.activePointer.x + this.game.camera.x, this.game.input.activePointer.y  + this.game.camera.y
     );
-
+    
     // Add our "wobble" factor to the targetAngle to make the missile wobble
     // Remember that this.wobble is tweening (above)
     targetAngle += this.game.math.degToRad(this.wobble);
@@ -117,11 +127,25 @@ Missile.prototype.update = function() {
     // Calculate velocity vector based on this.rotation and this.SPEED
     this.body.velocity.x = Math.cos(this.rotation) * this.SPEED;
     this.body.velocity.y = Math.sin(this.rotation) * this.SPEED;
+    
+    //this.body.x = this.game.input.activePointer.x
+    //this.body.y = this.game.input.activePointer.y
+    if (!this.game.camera.atLimit.x)
+    {
+        this.game.bondel.fondo.tilePosition.x = -this.game.camera.x; //((this.body.velocity.x) * this.game.time.physicsElapsed);
+    }
+
+    if (!this.game.camera.atLimit.y)
+    {
+        this.game.bondel.fondo.tilePosition.y = -this.game.camera.y; //((this.body.velocity.y) * this.game.time.physicsElapsed);
+    }
+    i++;
+    //if (i%10==0) console.log("pointer: ",this.game.input.activePointer.x, this.game.input.activePointer.y);
+    //if (i%10==0) console.log("camara: ",this.game.camera.x, this.game.camera.y);    
 };
 
 var game = new Phaser.Game(800, 400, Phaser.AUTO, '');
 game.state.add('game', GameState, true);
-//  Our world size is 1600 x 1200 pixels
 };
 
     </script>
