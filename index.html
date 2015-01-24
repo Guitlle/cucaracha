@@ -46,7 +46,7 @@
                 this.game.bondel.cuca = this.game.add.existing(
                     new Cuca(this.game, this.game.width/2, this.game.height - 16)
                 );
-                this.game.bondel.cuca.scale = new PIXI.Point(0.1, 0.1);
+                this.game.bondel.cuca.scale = new PIXI.Point(0.5,0.5);
                 
                 this.game.bondel.fondo2 = this.game.add.tileSprite(0, 0, this.cameraWidth, this.cameraHeight, 'fondo2');
                 this.game.bondel.fondo2.fixedToCamera = true;
@@ -77,7 +77,7 @@
 
                 // Define constants that affect motion
                 this.SPEED = 200; // missile speed pixels/second
-                this.TURN_RATE = 10; // turn rate in degrees/frame
+                this.TURN_RATE = 8; // turn rate in degrees/frame
                 this.WOBBLE_LIMIT = 10; // degrees
                 this.WOBBLE_SPEED = 200; // milliseconds
 
@@ -130,7 +130,7 @@
 
                     // Just set angle to target angle if they are close
                     if (Math.abs(delta) < this.game.math.degToRad(this.TURN_RATE)) {
-                        this.rotation = targetAngle - Math.PI;
+                        this.rotation = targetAngle;
                     }
                 }
 
