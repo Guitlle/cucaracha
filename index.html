@@ -50,7 +50,8 @@
                 this.game.input.activePointer.x = this.game.width/2;
                 this.game.input.activePointer.y = this.game.height/2 - 100;
                 this.game.camera.follow(this.game.bondel.cuca);
-                this.game.camera.deadzone= new Phaser.Rectangle(200, 100, 400, 200);
+                
+                this.game.camera.deadzone= new Phaser.Rectangle( Math.ceil( this.camera.width*0.25 ), Math.ceil( this.camera.height*0.25 ), Math.ceil(this.camera.width*0.5), Math.ceil(this.camera.height*0.5) );
             };
 
             // The update() method is called every frame
@@ -141,8 +142,7 @@
                     this.game.bondel.fondo.tilePosition.y = -this.game.camera.y;
                 }
                 i++;
-                //if (i%10==0) console.log("pointer: ",this.game.input.activePointer.x, this.game.input.activePointer.y);
-                //if (i%10==0) console.log("camara: ",this.game.camera.x, this.game.camera.y);    
+                
             };
 
             var game = new Phaser.Game(800, 400, Phaser.AUTO, '');
