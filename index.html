@@ -23,13 +23,17 @@ var GameState = function(game) {
 // Load images and sounds
 GameState.prototype.preload = function() {
     this.game.load.image('rocket', 'assets/cucaracha.png');
+    this.game.load.image('logo', 'phaser.png');
 };
 
 // Setup the example
 GameState.prototype.create = function() {
-    this.game.world.setBounds(0, 0, 800, 400);    
+    this.game.world.setBounds(0, 0, 800, 400);
     // Set stage background to something sky colored
     this.game.stage.backgroundColor = 0x4488cc;
+
+    var background_img = game.add.sprite(game.world.centerX, game.world.centerY, 'logo');
+    background_img.anchor.setTo(0.5, 0.5);
 
     // Create a missile and add it to the game in the bottom center of the stage
     this.game.add.existing(
