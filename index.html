@@ -25,7 +25,8 @@
 
             // Load images and sounds
             GameState.prototype.preload = function() {
-                this.game.load.image('fondo', 'assets/starfield.jpg');
+                this.game.load.image('fondo', 'assets/cocinapiso.png');
+                this.game.load.image('fondo2', 'assets/cocinamuebles.png');
                 this.game.load.image('cuca', 'assets/cucaracha.png');
                 this.game.load.image('logo', 'phaser.png');
             };
@@ -40,15 +41,15 @@
 
                 this.game.bondel.fondo = this.game.add.tileSprite(0, 0, this.cameraWidth, this.cameraHeight, 'fondo');
                 this.game.bondel.fondo.fixedToCamera = true;
-
-                var background_img = game.add.sprite(game.world.centerX, game.world.centerY, 'logo');
-                background_img.anchor.setTo(0.5, 0.5);
-
+                
                 // Create a missile and add it to the game in the bottom center of the stage
                 this.game.bondel.cuca = this.game.add.existing(
                     new Cuca(this.game, this.game.width/2, this.game.height - 16)
                 );
                 
+                this.game.bondel.fondo2 = this.game.add.tileSprite(0, 0, this.cameraWidth, this.cameraHeight, 'fondo2');
+                this.game.bondel.fondo2.fixedToCamera = true;
+
                 // Simulate a pointer click/tap input at the center of the stage
                 // when the example begins running.
                 this.game.input.activePointer.x = this.game.width/2;
@@ -138,12 +139,12 @@
                 
                 if (!this.game.camera.atLimit.x)
                 {
-                    this.game.bondel.fondo.tilePosition.x = -this.game.camera.x;
+                    this.game.bondel.fondo2.tilePosition.x = this.game.bondel.fondo.tilePosition.x = -this.game.camera.x;
                 }
 
                 if (!this.game.camera.atLimit.y)
                 {
-                    this.game.bondel.fondo.tilePosition.y = -this.game.camera.y;
+                    this.game.bondel.fondo2.tilePosition.y = this.game.bondel.fondo.tilePosition.y = -this.game.camera.y;
                 }
                 i++;
                 
