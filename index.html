@@ -17,6 +17,10 @@
             // Licensed under the terms of the MIT License
 
             var GameState = function(game) {
+                this.width = 1600;
+                this.height = 970;
+                this.cameraWidth = 800;
+                this.cameraHeight = 600;
             };
 
             // Load images and sounds
@@ -28,13 +32,13 @@
 
             // Setup the example
             GameState.prototype.create = function() {
-                this.game.world.setBounds(0, 0, 1600, 1200);    
+                this.game.world.setBounds(0, 0, this.width, this.height);    
                 // Set stage background to something sky colored
                 this.game.stage.backgroundColor = 0x4488cc;
                 
                 this.game.bondel = {};
 
-                this.game.bondel.fondo = this.game.add.tileSprite(0, 0, 800, 400, 'fondo');
+                this.game.bondel.fondo = this.game.add.tileSprite(0, 0, this.cameraWidth, this.cameraHeight, 'fondo');
                 this.game.bondel.fondo.fixedToCamera = true;
 
                 var background_img = game.add.sprite(game.world.centerX, game.world.centerY, 'logo');
@@ -145,7 +149,7 @@
                 
             };
 
-            var game = new Phaser.Game(800, 400, Phaser.AUTO, '');
+            var game = new Phaser.Game(GameState.width, GameState.height, Phaser.AUTO, '');
             game.state.add('game', GameState, true);
 
         };
