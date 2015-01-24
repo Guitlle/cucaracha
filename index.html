@@ -27,7 +27,7 @@
             GameState.prototype.preload = function() {
                 this.game.load.image('fondo', 'assets/cocinapiso.png');
                 this.game.load.image('fondo2', 'assets/cocinamuebles.png');
-                this.game.load.image('cuca', 'assets/cucaracha.png');
+                this.game.load.image('cuca', 'assets/cockroach-04.png');
                 this.game.load.image('logo', 'phaser.png');
             };
 
@@ -46,6 +46,7 @@
                 this.game.bondel.cuca = this.game.add.existing(
                     new Cuca(this.game, this.game.width/2, this.game.height - 16)
                 );
+                this.game.bondel.cuca.scale = new PIXI.Point(0.1, 0.1);
                 
                 this.game.bondel.fondo2 = this.game.add.tileSprite(0, 0, this.cameraWidth, this.cameraHeight, 'fondo2');
                 this.game.bondel.fondo2.fixedToCamera = true;
@@ -129,7 +130,7 @@
 
                     // Just set angle to target angle if they are close
                     if (Math.abs(delta) < this.game.math.degToRad(this.TURN_RATE)) {
-                        this.rotation = targetAngle;
+                        this.rotation = targetAngle - Math.PI;
                     }
                 }
 
