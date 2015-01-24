@@ -3,8 +3,8 @@
     <head>
         <meta charset="UTF-8" />
         <title>hello phaser!</title>
-        <script src="js/phaser.js"></script>
-        <script src="js/p2.js"></script>
+        <script src="js/phaser.min.js"></script>
+        <script src="js/phaser.min.js"></script>
     </head>
     <body>
                     <div id="example-container" style="margin-bottom: 1em"></div>
