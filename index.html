@@ -23,6 +23,7 @@ var GameState = function(game) {
 GameState.prototype.preload = function() {
     this.game.load.image('fondo', 'assets/starfield.jpg');
     this.game.load.image('cuca', 'assets/cucaracha.png');
+    this.game.load.image('logo', 'phaser.png');
 };
 
 // Setup the example
@@ -35,6 +36,9 @@ GameState.prototype.create = function() {
 
     this.game.bondel.fondo = this.game.add.tileSprite(0, 0, 800, 400, 'fondo');
     this.game.bondel.fondo.fixedToCamera = true;
+
+    var background_img = game.add.sprite(game.world.centerX, game.world.centerY, 'logo');
+    background_img.anchor.setTo(0.5, 0.5);
 
     // Create a missile and add it to the game in the bottom center of the stage
     this.game.bondel.cuca = this.game.add.existing(
