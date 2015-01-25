@@ -29,7 +29,7 @@
             GameState.prototype.preload = function() {
                 this.game.load.image('fondo', 'assets/cocinapiso.png');
                 this.game.load.image('muebles', 'assets/cocinamuebles.png');
-                this.game.load.image('cuca', 'assets/cockroach-04.png');
+                this.game.load.spritesheet('cuca', 'assets/cockroach-02.png', 75, 75, 5);
                 this.game.load.image('logo', 'phaser.png');
                 this.game.load.image('atari', 'atari.png');
                 this.game.load.image('pasos', 'assets/pasos.gif');
@@ -55,9 +55,6 @@
                 this.game.bondel.cuca = this.game.add.existing(
                     new Cuca(this.game, this.game.width/2, this.game.height - 16)
                 );
-
-
-                //this.game.bondel.cuca.scale = new PIXI.Point(0.5,0.5);
 
                 this.game.bondel.muebles = this.game.add.tileSprite(0, 0, this.cameraWidth, this.cameraHeight, 'muebles');
                 this.game.bondel.muebles.fixedToCamera = true;
@@ -103,7 +100,9 @@
             // Cuca constructor
             var Cuca = function(game, x, y) {
                 Phaser.Sprite.call(this, game, x, y, 'cuca');
-
+                this.animations.add('sacude');
+                this.animations.play('sacude', 10, false);
+                
                 // Set the pivot point for this sprite to the center
                 this.anchor.setTo(0.5, 0.5);
 
@@ -127,7 +126,6 @@
             Cuca.prototype = Object.create(Phaser.Sprite.prototype);
             Cuca.prototype.constructor = Cuca;
 
-            var i = 0;
             var atari;
 
             Cuca.prototype.update = function() {
@@ -180,14 +178,16 @@
                 {
                     this.game.bondel.muebles.tilePosition.y = this.game.bondel.fondo.tilePosition.y = -this.game.camera.y;
                 }
-                i++;
-
+                
+                if ( this.animations.getAnimation('sacude').isFinished && Math.random() > 0.991 ) 
+                    this.animations.play('sacude', 10, false);
+                
             };
 
             var addItem = function(){
                 var randomIndex = Math.floor(Math.random() * candis.length);
                 var randomString = candis[randomIndex];
-
+                
                 atari = game.add.sprite(0, 0, randomString);
 
                 game.physics.enable(atari, Phaser.Physics.ARCADE);
@@ -198,10 +198,9 @@
                 atari.body.bounce.set(1);
 
             }
-
-            var game = new Phaser.Game(GameState.width, GameState.height, Phaser.AUTO, '');
+            
+            var game = new Phaser.Game(800, 600, Phaser.AUTO, '');
             game.state.add('game', GameState, true);
-
         };
 
     </script>
