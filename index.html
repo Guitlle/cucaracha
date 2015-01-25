@@ -33,9 +33,10 @@
                 this.game.load.image('fondo', 'assets/cocinapiso.png');
                 this.game.load.image('muebles', 'assets/cocinamuebles.png');
                 this.game.load.spritesheet('cuca', 'assets/cockroach-02.png', 75, 75, 5);
+                this.game.load.image('cucamuerta', 'assets/cockroach-03.png');
                 this.game.load.image('logo', 'phaser.png');
                 this.game.load.image('atari', 'atari.png');
-                this.game.load.image('pasos', 'assets/pasos.gif');
+                this.game.load.spritesheet('pasos', 'assets/pasos.png', 170,110,2);
                 for (i=1; i<8 ; i++){
                   var localcandi = "candy"+i;
                   candis.push(localcandi);
@@ -85,13 +86,15 @@
             GameState.prototype.update = function() {
               //game.physics.arcade.collide(atari, game.bondel.cuca);
               game.physics.arcade.collide(atari, game.bondel.cuca, candyCollisionHandler, null, this);
+              game.physics.arcade.collide(game.bondel.pasos, game.bondel.cuca, pasosCollisionHandler, null, this);
             };
 
             var Pasos = function(game, x, y, dir) {
                 Phaser.Sprite.call(this, game, x, y, 'pasos');
                 this.game.physics.enable(this, Phaser.Physics.ARCADE);
                 this.anchor.setTo(0.5, 0.5);
-
+                this.animations.add('camina');
+                this.animations.play('camina', 2, true);
             };
             // Cuca are a type of Phaser.Sprite
             Pasos.prototype = Object.create(Phaser.Sprite.prototype);
@@ -134,6 +137,12 @@
             var atari;
 
             Cuca.prototype.update = function() {
+                if (this.dead) {
+                  this.kill();
+                  this.game.add.sprite( this.x, this.y, 'cucamuerta');
+                  this.game.bondel.pasos.kill();
+                  return;
+                }
                 // Calculate the angle from the missile to the mouse cursor game.input.x
                 // and game.input.y are the mouse position; substitute with whatever
                 // target coordinates you need.
@@ -198,7 +207,13 @@
 
                 //game.stage.backgroundColor = '#992d2d';
             }
-
+            ///Eating candy object.
+            function pasosCollisionHandler (obj1, obj2) {
+                console.log("Die !");
+                obj2.dead = true;
+            }
+            
+            
             var addItem = function(){
                 var randomIndex = Math.floor(Math.random() * candis.length);
                 var randomString = candis[randomIndex];
@@ -216,6 +231,5 @@
         };
 
     </script>
-    <button id="addpasos">pasos</button>
     </body>
 </html>
