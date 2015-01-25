@@ -30,6 +30,7 @@
                 this.game.load.image('cuca', 'assets/cockroach-04.png');
                 this.game.load.image('logo', 'phaser.png');
                 this.game.load.image('atari', 'atari.png');
+                this.game.load.image('pasos', 'assets/pasos.gif');
             };
 
             // Setup the example
@@ -62,10 +63,29 @@
 
 
                 this.game.camera.deadzone= new Phaser.Rectangle( Math.ceil( this.camera.width*0.25 ), Math.ceil( this.camera.height*0.25 ), Math.ceil(this.camera.width*0.5), Math.ceil(this.camera.height*0.5) );
+
+                this.game.add.existing(new Phaser.Button(this.game, 10,10, 'pasos', function() {
+                    var paso = new Pasos(this.game,100,100,1);
+                    this.game.bondel.pasos = this.game.add.existing(paso);
+                }), this );
             };
 
             // The update() method is called every frame
             GameState.prototype.update = function() {
+            };
+
+            var Pasos = function(game, x, y, dir) {
+                Phaser.Sprite.call(this, game, x, y, 'pasos');
+                this.game.physics.enable(this, Phaser.Physics.ARCADE);
+                this.anchor.setTo(0.5, 0.5);
+
+            };
+            // Cuca are a type of Phaser.Sprite
+            Pasos.prototype = Object.create(Phaser.Sprite.prototype);
+            Pasos.prototype.constructor = Pasos;
+            var i = 0;
+            Pasos.prototype.update = function() {
+                this.rotation = this.game.physics.arcade.moveToObject(this, this.game.bondel.cuca, 60);
             };
 
             // Cuca constructor
@@ -76,7 +96,6 @@
                 this.anchor.setTo(0.5, 0.5);
 
                 // Enable physics on the missile
-                this.game.physics.startSystem(Phaser.Physics.P2JS);
                 this.game.physics.enable(this, Phaser.Physics.ARCADE);
 
                 // Define constants that affect motion
@@ -165,6 +184,6 @@
         };
 
     </script>
-
+    <button id="addpasos">pasos</button>
     </body>
 </html>
