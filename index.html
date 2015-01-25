@@ -16,9 +16,12 @@
             // Copyright © 2014 John Watson
             // Licensed under the terms of the MIT License
 
+            var WIDTH = 1600;
+            var HEIGHT = 970;
+
             var GameState = function(game) {
-                this.width = 1600;
-                this.height = 970;
+                this.width = WIDTH;
+                this.height = HEIGHT;
                 this.cameraWidth = 800;
                 this.cameraHeight = 600;
             };
@@ -80,7 +83,8 @@
 
             // The update() method is called every frame
             GameState.prototype.update = function() {
-              game.physics.arcade.collide(atari, game.bondel.cuca);
+              //game.physics.arcade.collide(atari, game.bondel.cuca);
+              game.physics.arcade.collide(atari, game.bondel.cuca, candyCollisionHandler, null, this);
             };
 
             var Pasos = function(game, x, y, dir) {
@@ -184,19 +188,25 @@
                 
             };
 
+            ///Eating candy object.
+            function candyCollisionHandler (obj1, obj2) {
+                console.log("crashed");
+                console.log(obj1);
+                console.log(obj2);
+                obj1.destroy();
+
+                //game.stage.backgroundColor = '#992d2d';
+            }
+
             var addItem = function(){
                 var randomIndex = Math.floor(Math.random() * candis.length);
                 var randomString = candis[randomIndex];
-                
-                atari = game.add.sprite(0, 0, randomString);
+                var wid = Math.random() * WIDTH;
+                var hei = Math.random() * HEIGHT;
+
+                atari = game.add.sprite(wid, hei, randomString);
 
                 game.physics.enable(atari, Phaser.Physics.ARCADE);
-                atari.body.velocity.setTo(200,200);
-                //  This makes the game world bounce-able
-                atari.body.collideWorldBounds = true;
-
-                atari.body.bounce.set(1);
-
             }
             
             var game = new Phaser.Game(800, 600, Phaser.AUTO, '');
