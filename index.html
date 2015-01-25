@@ -24,6 +24,8 @@
             };
 
             // Load images and sounds
+            var candis = [];
+
             GameState.prototype.preload = function() {
                 this.game.load.image('fondo', 'assets/cocinapiso.png');
                 this.game.load.image('muebles', 'assets/cocinamuebles.png');
@@ -31,6 +33,11 @@
                 this.game.load.image('logo', 'phaser.png');
                 this.game.load.image('atari', 'atari.png');
                 this.game.load.image('pasos', 'assets/pasos.gif');
+                for (i=1; i<8 ; i++){
+                  var localcandi = "candy"+i;
+                  candis.push(localcandi);
+                  this.game.load.image(localcandi, 'assets/'+localcandi+'.png');
+                }
             };
 
             // Setup the example
@@ -178,7 +185,10 @@
             };
 
             var addItem = function(){
-              atari = game.add.sprite(0, 0, 'atari');
+                var randomIndex = Math.floor(Math.random() * candis.length);
+                var randomString = candis[randomIndex];
+
+                atari = game.add.sprite(0, 0, randomString);
 
                 game.physics.enable(atari, Phaser.Physics.ARCADE);
                 atari.body.velocity.setTo(200,200);
