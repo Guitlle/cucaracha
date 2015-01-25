@@ -26,7 +26,7 @@
             // Load images and sounds
             GameState.prototype.preload = function() {
                 this.game.load.image('fondo', 'assets/cocinapiso.png');
-                this.game.load.image('fondo2', 'assets/cocinamuebles.png');
+                this.game.load.image('muebles', 'assets/cocinamuebles.png');
                 this.game.load.image('cuca', 'assets/cockroach-04.png');
                 this.game.load.image('logo', 'phaser.png');
                 this.game.load.image('atari', 'atari.png');
@@ -50,8 +50,8 @@
                 );
                 //this.game.bondel.cuca.scale = new PIXI.Point(0.5,0.5);
 
-                this.game.bondel.fondo2 = this.game.add.tileSprite(0, 0, this.cameraWidth, this.cameraHeight, 'fondo2');
-                this.game.bondel.fondo2.fixedToCamera = true;
+                this.game.bondel.muebles = this.game.add.tileSprite(0, 0, this.cameraWidth, this.cameraHeight, 'muebles');
+                this.game.bondel.muebles.fixedToCamera = true;
 
                 // Simulate a pointer click/tap input at the center of the stage
                 // when the example begins running.
@@ -163,12 +163,12 @@
 
                 if (!this.game.camera.atLimit.x)
                 {
-                    this.game.bondel.fondo2.tilePosition.x = this.game.bondel.fondo.tilePosition.x = -this.game.camera.x;
+                    this.game.bondel.muebles.tilePosition.x = this.game.bondel.fondo.tilePosition.x = -this.game.camera.x;
                 }
 
                 if (!this.game.camera.atLimit.y)
                 {
-                    this.game.bondel.fondo2.tilePosition.y = this.game.bondel.fondo.tilePosition.y = -this.game.camera.y;
+                    this.game.bondel.muebles.tilePosition.y = this.game.bondel.fondo.tilePosition.y = -this.game.camera.y;
                 }
                 i++;
 
