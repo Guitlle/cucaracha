@@ -77,13 +77,11 @@
                 //addItem();
 
                 this.game.camera.deadzone= new Phaser.Rectangle( Math.ceil( this.camera.width*0.25 ), Math.ceil( this.camera.height*0.25 ), Math.ceil(this.camera.width*0.5), Math.ceil(this.camera.height*0.5) );
+                  
 
-                this.game.add.existing(new Phaser.Button(this.game, 10,10, 'pasos', function() {
-                    var paso = new Pasos(this.game,100,100,1);
-                    this.game.bondel.pasos = this.game.add.existing(paso);
-                }), this );
-
-
+                var paso = new Pasos(this.game,0,0,1);
+                this.game.bondel.pasos = this.game.add.existing(paso);
+              
             };
 
             // The update() method is called every frame
