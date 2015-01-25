@@ -113,6 +113,7 @@
                 // Enable physics on the missile
                 this.game.physics.enable(this, Phaser.Physics.ARCADE);
                 this.body.collideWorldBounds = true;
+                this.body.setSize(25, 25, 25, 25);
                 this.body.immovable = true;
 
                 // Define constants that affect motion
@@ -201,12 +202,13 @@
             var addItem = function(){
                 var randomIndex = Math.floor(Math.random() * candis.length);
                 var randomString = candis[randomIndex];
-                var wid = Math.random() * WIDTH;
-                var hei = Math.random() * HEIGHT;
+                var wid = 200; // Math.random() * WIDTH;
+                var hei = 300; //Math.random() * HEIGHT;
 
                 atari = game.add.sprite(wid, hei, randomString);
 
                 game.physics.enable(atari, Phaser.Physics.ARCADE);
+                atari.body.setSize(14, 14, 25, 25);
             }
             
             var game = new Phaser.Game(800, 600, Phaser.AUTO, '');
