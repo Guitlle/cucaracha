@@ -27,7 +27,8 @@
             };
 
             // Load images and sounds
-            var candis = [];
+            var candi_strings = [];
+            var candi_objects = [];
 
             GameState.prototype.preload = function() {
                 this.game.load.image('fondo', 'assets/cocinapiso.png');
@@ -38,7 +39,7 @@
                 this.game.load.image('pasos', 'assets/pasos.gif');
                 for (i=1; i<8 ; i++){
                   var localcandi = "candy"+i;
-                  candis.push(localcandi);
+                  candi_strings.push(localcandi);
                   this.game.load.image(localcandi, 'assets/'+localcandi+'.png');
                 }
             };
@@ -69,7 +70,10 @@
                 this.game.camera.follow(this.game.bondel.cuca);
 
                 //this.game.time.events.loop(Phaser.Timer.SECOND * 4, addItem, this);
-                addItem();
+                for (i=0; i<5; i++){
+                  addItem();
+                }
+                //addItem();
 
                 this.game.camera.deadzone= new Phaser.Rectangle( Math.ceil( this.camera.width*0.25 ), Math.ceil( this.camera.height*0.25 ), Math.ceil(this.camera.width*0.5), Math.ceil(this.camera.height*0.5) );
 
@@ -84,7 +88,12 @@
             // The update() method is called every frame
             GameState.prototype.update = function() {
               //game.physics.arcade.collide(atari, game.bondel.cuca);
-              game.physics.arcade.collide(atari, game.bondel.cuca, candyCollisionHandler, null, this);
+              for (i=0; i< candi_objects.length; i++){
+                var candi = candi_objects[i];
+                game.physics.arcade.collide(candi, game.bondel.cuca, candyCollisionHandler, null, this);
+              }
+
+
             };
 
             var Pasos = function(game, x, y, dir) {
@@ -106,7 +115,7 @@
                 Phaser.Sprite.call(this, game, x, y, 'cuca');
                 this.animations.add('sacude');
                 this.animations.play('sacude', 10, false);
-                
+
                 // Set the pivot point for this sprite to the center
                 this.anchor.setTo(0.5, 0.5);
 
@@ -183,10 +192,10 @@
                 {
                     this.game.bondel.muebles.tilePosition.y = this.game.bondel.fondo.tilePosition.y = -this.game.camera.y;
                 }
-                
-                if ( this.animations.getAnimation('sacude').isFinished && Math.random() > 0.991 ) 
+
+                if ( this.animations.getAnimation('sacude').isFinished && Math.random() > 0.991 )
                     this.animations.play('sacude', 10, false);
-                
+
             };
 
             ///Eating candy object.
@@ -200,17 +209,18 @@
             }
 
             var addItem = function(){
-                var randomIndex = Math.floor(Math.random() * candis.length);
-                var randomString = candis[randomIndex];
-                var wid = 200; // Math.random() * WIDTH;
-                var hei = 300; //Math.random() * HEIGHT;
+                var randomIndex = Math.floor(Math.random() * candi_strings.length);
+                var randomString = candi_strings[randomIndex];
+                var wid = Math.random() * WIDTH;
+                var hei = Math.random() * HEIGHT;
 
-                atari = game.add.sprite(wid, hei, randomString);
+                candi_obj = game.add.sprite(wid, hei, randomString);
+                candi_objects.push(candi_obj);
 
-                game.physics.enable(atari, Phaser.Physics.ARCADE);
-                atari.body.setSize(14, 14, 25, 25);
+                game.physics.enable(candi_obj, Phaser.Physics.ARCADE);
+                candi_obj.body.setSize(14, 14, 25, 25);
             }
-            
+
             var game = new Phaser.Game(800, 600, Phaser.AUTO, '');
             game.state.add('game', GameState, true);
         };
